@@ -18,18 +18,19 @@ import torch.nn.functional as F
 import os
 
 class Linear_QNet(nn.Module):
-    def __init__(self, input_SIZE, hidden_SIZE, output_SIZE):
+    def __init__(self, input_size, hidden_size, output_size):
         super().__init__()
-        self.linear1 = nn.Linear(input_SIZE, hidden_SIZE)
-        self.linear2 = nn.Linear(hidden_SIZE, output_SIZE)
+        self.input_size = input_size
+        self.linear1 = nn.Linear(input_size, hidden_size)
+        self.linear2 = nn.Linear(hidden_size, output_size)
         self.flatten = nn.Flatten()
 
     def forward(self, x):
         if len(x.shape) != 3:
-            x = x.view(-1, 81)
+            x = x.view(-1, self.input_size)
         x = F.relu(self.linear1(x))
         x = self.linear2(x)
-        return x
+        return x # x corresponds to Q values for each action
 
     def save(self, file_name='model.pth'):
         model_folder_path = './model'
@@ -63,24 +64,24 @@ class QTrainer:
             reward = torch.unsqueeze(reward, 0)
             done = (done, )
 
-        state = state.view(-1, 81)
+        state = state.view(-1, self.input_size)
 
-        # 1: pRED_COLORicted Q values with current state
-        pRED_COLOR = self.model(state)
+        # 1: predicted Q values with current state
+        pred = self.model(state)
 
-        target = pRED_COLOR.clone()
+        target = pred.clone()
         for idx in range(len(done)):
             Q_new = reward[idx]
             if not done[idx]:
-                Q_new = reward[idx] + self.gamma * torch.max(self.model(next_state[idx]))
+                Q_new = reward[idx] + self.gamma * torch.max(self.model(next_state[idx])) 
 
             target[idx][torch.argmax(action[idx]).item()] = Q_new
     
-        # 2: Q_new = r + y * max(next_pRED_COLORicted Q value) -> only do this if not done
-        # pRED_COLOR.clone()
-        # pRED_COLORs[argmax(action)] = Q_new
+        # 2: Q_new = r + y * max(next_predicted Q value) -> only do this if not done
+        # pred.clone()
+        # preds[argmax(action)] = Q_new
         self.optimizer.zero_grad()
-        loss = self.criterion(target, pRED_COLOR)
+        loss = self.criterion(target, pred)
         loss.backward() 
 
         self.losses.append(loss.item())

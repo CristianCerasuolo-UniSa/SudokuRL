@@ -25,9 +25,9 @@ class Agent:
     def __init__(self):
         self.n_games = 0
         self.epsilon = 0 # randomness
-        self.gamma = 0.9 # discount rate
+        self.gamma = DISCOUNT_RATE # discount rate
         self.memory = deque(maxlen=MAX_MEMORY) # popleft()
-        self.model = Linear_QNet(81, 16384, 810)
+        self.model = Linear_QNet(81 * 2, 16384, 810)
         self.trainer = QTrainer(self.model, lr=LR, gamma=self.gamma) 
 
     def remember(self, state, action, reward, next_state, done):
@@ -59,9 +59,9 @@ class Agent:
             final_move = (x, y, num)
         else:
             state0 = torch.tensor(state, dtype=torch.float).view(1, -1)
-            pRED_COLORiction = self.model(state0) # pRED_COLORiction is an 810 tensor
-            pRED_COLORiction = pRED_COLORiction.reshape(9,9,10)
-            final_move = np.unravel_index(np.argmax(pRED_COLORiction.detach()), pRED_COLORiction.shape)
+            prediction = self.model(state0) # prediction is an 810 tensor
+            prediction = prediction.reshape(9,9,10)
+            final_move = np.unravel_index(np.argmax(prediction.detach()), prediction.shape)
 
         return final_move
 

@@ -26,8 +26,8 @@ pygame.init()
 class Game:
 
     def __init__(self):
-        
-        self.game = Sudoku(self._load_sudoku())
+        self.initial_board = self._load_sudoku()
+        self.game = Sudoku(self.initial_board)
         self.cells = create_cells()
         self.active_cell = None
         self.solve_rect = pygame.Rect(        
@@ -128,9 +128,9 @@ class Game:
         return reward, game_over
     
     def get_state(self):
-        state = self.game.get_board()
-        state = [list(map(lambda x: 0 if x is None else x, col)) for col in state]
-        return state
+        board = self.game.get_board()
+        board = [list(map(lambda x: 0 if x is None else x, col)) for col in board]
+        return self.initial_board + board
 
 
 # def visual_solve(game, cells):
