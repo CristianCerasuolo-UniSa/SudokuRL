@@ -45,7 +45,7 @@ The GPL-3.0 license is an open source license that grants users the freedom to u
 - **Distribution of modifications**: If you distribute the software or its modifications, you must make the source code and license rights available to end users.
 - **No additional restrictions**: You cannot add additional restrictions to GPL-3.0 licenses.
 
-For further details and information about the rights and obligations granted by the GPL-3.0 license, read the [LICENSE.txt] file in this repository.
+For further details and information about the rights and obligations granted by the GPL-3.0 license, read the [LICENSE.txt](LICENSE.txt) file in this repository.
 
 ### Credits
 
