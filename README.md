@@ -36,7 +36,7 @@ Thank you in advance for your contribution!
 
 ## License
 
-This project is released under the [GNU General Public License v3.0 (GPL-3.0)](LICENSE).
+This project is released under the [GNU General Public License v3.0 (GPL-3.0)](COPYING.txt).
 
 The GPL-3.0 license is an open source license that grants users the freedom to use, modify and distribute the software. Some key features of the license include:
 
@@ -45,7 +45,7 @@ The GPL-3.0 license is an open source license that grants users the freedom to u
 - **Distribution of modifications**: If you distribute the software or its modifications, you must make the source code and license rights available to end users.
 - **No additional restrictions**: You cannot add additional restrictions to GPL-3.0 licenses.
 
-For further details and information about the rights and obligations granted by the GPL-3.0 license, read the [LICENSE.txt](LICENSE.txt) file in this repository.
+For further details and information about the rights and obligations granted by the GPL-3.0 license, read the [COPYING.txt](COPYING.txt) file in this repository.
 
 ### Credits
 
