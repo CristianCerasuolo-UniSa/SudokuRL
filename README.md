@@ -15,7 +15,7 @@ The amount of rewards he gets in each game is very low and struggles to increase
 
 ## Goals
 
-L'obiettivo principale è riuscire a creare un agente in grado di risolvere sudoku almeno di difficoltà media.
+The main objective is to be able to create an agent capable of solving at least medium difficulty sudoku.
 
 ## Contribute
 
@@ -32,8 +32,7 @@ If you are interested in contributing to this project, you are welcome! Follow t
 9. Clearly describe the changes you made and the reasoning behind them.
 
 Once the pull request is opened, it will be reviewed and, if deemed appropriate, integrated into the main project.
-
-We thank you in advance for your contribution!
+Thank you in advance for your contribution!
 
 ## License
 
