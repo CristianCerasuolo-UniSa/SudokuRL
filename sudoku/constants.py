@@ -15,6 +15,8 @@ MAX_MEMORY = 100_000
 BATCH_SIZE = 1000
 LR = 0.01
 
+DISCOUNT_RATE = 0.9
+
 PROGRESS_REWARD = 100 # The agent fills an empty location with a valid number
 NO_PROGRESS_REWARD = -1 # The agent removes a number from a location that was previously filled but with a valid number
 VIOLATION_REWARD = -1000 # The agent fills an empty location with an invalid number
