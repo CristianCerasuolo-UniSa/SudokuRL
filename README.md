@@ -50,4 +50,4 @@ For further details and information about the rights and obligations granted by 
 
 ### Credits
 
-This project was created by Cristian Cerasuolo basing on the work of XXX for the code workflow and on the work of XXX for the Sudoku interface.
+This project was created by Cristian Cerasuolo basing on the work of [PatrickLoeber](https://github.com/patrickloeber/snake-ai-pytorch) for the code workflow and on the work of [Kistler21](https://github.com/Kistler21) for the Sudoku interface.
