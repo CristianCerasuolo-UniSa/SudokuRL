@@ -2,6 +2,10 @@
 
 SudokuRL is an open source project that aims to solve the Sudoku game using Reinforcement Learning techniques. The project was started with the aim of exploring the potential of machine learning in solving complex problems such as Sudoku.
 
+## Goals
+
+The main objective is to be able to create an agent capable of solving at least medium difficulty sudoku.
+
 ## Actual State
 
 Currently the system works, the agent trains using Deep Q-Learning on a very diverse sudoku database. The agent is absolutely unable to solve any sudoku as he prefers to violate the rules rather than respect them. During the execution of the code, some graphs are saved that show the progress of the training.
@@ -12,10 +16,9 @@ The amount of rewards he gets in each game is very low and struggles to increase
 - [ ] Implement a more effective rewards system
 - [ ] Validate the implementation of Deep Q-Learning
 - [ ] Identify an evaluation metric for the agent other than success rate or rewards obtained
-
-## Goals
-
-The main objective is to be able to create an agent capable of solving at least medium difficulty sudoku.
+- [ ] Evaluate a different state representation
+- [ ] Implement a more complex neural network, e.g. a CNN
+- [ ] Considers the possibility of using a different algorithm instead of DQN. [Examples here](https://arxiv.org/pdf/1810.06339.pdf)
 
 ## Contribute
 
