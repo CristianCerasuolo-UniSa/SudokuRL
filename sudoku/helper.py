@@ -68,6 +68,6 @@ def plot_mean(scores, mean_scores, label, save = False):
             os.makedirs(SAVE_DIR)
         plt.savefig(SAVE_DIR + os.sep + label + '.png')
         plt.close()
-    else:
-        plt.show(block=False)
-        plt.pause(.1)
+
+    plt.show(block=False)
+    plt.pause(.1)

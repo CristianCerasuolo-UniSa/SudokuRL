@@ -27,7 +27,7 @@ class Agent:
         self.epsilon = 0 # randomness
         self.gamma = DISCOUNT_RATE # discount rate
         self.memory = deque(maxlen=MAX_MEMORY) # popleft()
-        self.model = Linear_QNet(81 * 2, 16384, 810)
+        self.model = Linear_QNet(81 * 2, [4096, 8192, 4096], 810)
         self.trainer = QTrainer(self.model, lr=LR, gamma=self.gamma) 
 
     def remember(self, state, action, reward, next_state, done):
@@ -64,6 +64,15 @@ class Agent:
             final_move = np.unravel_index(np.argmax(prediction.detach()), prediction.shape)
 
         return final_move
+    
+
+def calculate_completeness(state):
+    original_board = state[:9][:]
+    input_cells = len(list(filter(lambda x: x != 0, [cell for row in original_board for cell in row])))
+    necessary_cells_to_fill = 81 - input_cells
+    final_board = state[9:][:]
+    total_cells = len(list(filter(lambda x: x != 0, [cell for row in final_board for cell in row])))
+    return (total_cells - input_cells) / necessary_cells_to_fill
 
 
 def train():
@@ -76,11 +85,14 @@ def train():
     violations = 0
     dumb_moves = 0
     total_reward = 0
+    change = 0
     games_result = []
     games_violation = []
     games_dumb_moves = []
     games_rewards = []
     games_rewards_mean = []
+    games_value_change = []
+    games_completeness = []
 
     agent = Agent()
     game = Game()
@@ -97,6 +109,8 @@ def train():
             violations += 1
         elif reward[1] == "Dumb move":
             dumb_moves += 1
+        elif reward[1] == "Change":
+            change += 1
         total_reward += reward[0]
         
         state_new = game.get_state()
@@ -110,6 +124,8 @@ def train():
 
         if game_over[0]:
             # train long memory, plot result
+            last_state = game.get_state()
+
             game = Game()
             agent.n_games += 1
             agent.train_long_memory()
@@ -119,21 +135,17 @@ def train():
             games_violation.append(violations)
             games_dumb_moves.append(dumb_moves)
             games_rewards.append(total_reward)
+            games_value_change.append(change)
             games_rewards_mean.append(np.mean(games_rewards))
+            games_completeness.append(calculate_completeness(last_state))
 
             total_reward = 0
             violations = 0
             dumb_moves = 0
+            change = 0
 
             plot_mean(games_rewards, games_rewards_mean, "Rewards", True)
-            plots([games_result, games_violation, games_dumb_moves, games_rewards, agent.trainer.mean_losses], ['Results', 'Violations', 'Dumb moves', 'Rewards', 'Loss'], save = True)
+            plots([games_result, games_violation, games_dumb_moves, games_rewards, games_value_change, games_completeness, agent.trainer.mean_losses], ['Results', 'Violations', 'Dumb moves', 'Rewards', 'Changes', "Completeness", 'Loss'], save = True)
 
 if __name__ == '__main__':
     train()
-
-def map_loss(losses, period):
-    mean_losses = []
-    for i in range(0, len(losses), period):
-        mean_losses.append(np.mean(losses[i:i+period]))
-
-    return mean_losses

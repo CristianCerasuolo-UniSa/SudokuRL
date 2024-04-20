@@ -37,7 +37,7 @@ class Game:
             BUTTON_HEIGHT + BUTTON_BORDER*2
         )
         self.moves = 0
-        self.threshold = 1000
+        self.threshold = MAX_MOVES
 
     def _load_sudoku(self):
         data = pd.read_csv(TRAIN_DATA_PATH)
@@ -48,8 +48,6 @@ class Game:
                 sudoku[i].append(data[i*9+j])
         return sudoku
                 
-
-
     def _get_cell(self, x, y):
         '''Returns the cell from the cells list given x and y.'''
         return self.cells[x][y]
@@ -83,17 +81,19 @@ class Game:
                     if old_val is None:
                         # Here if the cell was empty and the agent fills it with a valid number
                         print("PROGRESS")
-                        reward = PROGRESS_REWARD*math.log2(len(self.game.get_empty_cells())), "Progress" # Reward is logarithmic to the number of empty cells
+                        # reward = PROGRESS_REWARD*math.log2(len(self.game.get_empty_cells())), "Progress" # Reward is logarithmic to the number of empty cells
+                        reward = PROGRESS_REWARD, "Progress"
                     else:
                         # Here if the cell was filled and the agent replaces the number with a valid number
                         print("DUMB MOVE")
-                        reward = DUMB_MOVE_REWARD, "Dumb move"
+                        reward = CHANGE_REWARD, "Change"
             else:
                 # Here if the agent removes a number from a cell that is editable
                 if old_val is not None:
                     # Here if the cell was filled and the agent removes the number
                     print("NO PROGRESS")
-                    reward = NO_PROGRESS_REWARD*math.log2(len(self.game.get_empty_cells())*2), "No progress"
+                    # reward = NO_PROGRESS_REWARD*math.log2(len(self.game.get_empty_cells())*2), "No progress"
+                    reward = NO_PROGRESS_REWARD, "No progress"
                 else:
                     # Here if the cell was empty and the agent removes the number (nothing to remove)
                     print("DUMB MOVE")

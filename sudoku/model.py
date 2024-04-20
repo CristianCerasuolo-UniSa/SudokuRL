@@ -18,18 +18,23 @@ import torch.nn.functional as F
 import os
 
 class Linear_QNet(nn.Module):
-    def __init__(self, input_size, hidden_size, output_size):
+    def __init__(self, input_size, hidden_size: list, output_size):
         super().__init__()
         self.input_size = input_size
-        self.linear1 = nn.Linear(input_size, hidden_size)
-        self.linear2 = nn.Linear(hidden_size, output_size)
-        self.flatten = nn.Flatten()
+        self.layers = []
+        hidden_size = [input_size] + hidden_size + [output_size]
+        for i in range(len(hidden_size) - 1):
+            self.layers.append(nn.Linear(hidden_size[i], hidden_size[i+1]))
+            self.layers.append(nn.ReLU())
+
+        self.layers = nn.Sequential(*self.layers)
 
     def forward(self, x):
         if len(x.shape) != 3:
             x = x.view(-1, self.input_size)
-        x = F.relu(self.linear1(x))
-        x = self.linear2(x)
+
+        for layer in self.layers:
+            x = layer(x)
         return x # x corresponds to Q values for each action
 
     def save(self, file_name='model.pth'):
@@ -64,7 +69,7 @@ class QTrainer:
             reward = torch.unsqueeze(reward, 0)
             done = (done, )
 
-        state = state.view(-1, self.input_size)
+        state = state.view(-1, self.model.input_size)
 
         # 1: predicted Q values with current state
         pred = self.model(state)
@@ -91,3 +96,13 @@ class QTrainer:
 
 
 
+if __name__ == '__main__':
+    model = Linear_QNet(81 * 2, [16384, ], 810)
+    count = 0 
+    for param in model.parameters():
+        count += 1
+        print(param)
+
+    print(len(list(model.layers[0].parameters())))
+    print(count) 
+    print(model)
