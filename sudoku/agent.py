@@ -95,6 +95,7 @@ def train(device, save_period):
     games_rewards_mean = []
     games_value_change = []
     games_completeness = []
+    games_mean_loss = []
 
     agent = Agent(device)
     game = Game()
@@ -143,6 +144,7 @@ def train(device, save_period):
             games_value_change.append(change)
             games_rewards_mean.append(np.mean(games_rewards))
             games_completeness.append(calculate_completeness(last_state))
+            games_mean_loss.append(agent.trainer.get_mean_loss())
 
             total_reward = 0
             violations = 0
@@ -150,7 +152,7 @@ def train(device, save_period):
             change = 0
 
             plot_mean(games_rewards, games_rewards_mean, "Rewards", True)
-            plots([games_result, games_violation, games_dumb_moves, games_rewards, games_value_change, games_completeness, agent.trainer.mean_losses], ['Results', 'Violations', 'Dumb moves', 'Rewards', 'Changes', "Completeness", 'Loss'], save = True)
+            plots([games_result, games_violation, games_dumb_moves, games_rewards, games_value_change, games_completeness, games_mean_loss], ['Results', 'Violations', 'Dumb moves', 'Rewards', 'Changes', "Completeness", 'Loss'], save = True)
 
 if __name__ == '__main__':
 

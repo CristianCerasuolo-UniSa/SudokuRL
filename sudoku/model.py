@@ -53,7 +53,6 @@ class QTrainer:
         self.optimizer = optim.Adam(model.parameters(), lr=self.lr)
         self.criterion = nn.MSELoss()
         self.losses = []
-        self.mean_losses = []
         self.device = device
 
     def train_step(self, state, action, reward, next_state, done):
@@ -90,9 +89,11 @@ class QTrainer:
         loss.backward() 
 
         self.losses.append(loss.item())
-        self.mean_losses.append(sum(self.losses) / len(self.losses))
 
         self.optimizer.step()
+
+    def get_mean_loss(self):
+        return sum(self.losses) / len(self.losses)
 
 
 if __name__ == '__main__':
