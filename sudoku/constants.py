@@ -17,12 +17,15 @@ LR = 0.01
 
 DISCOUNT_RATE = 0.9
 
-PROGRESS_REWARD = 100 # The agent fills an empty location with a valid number
+MAX_MOVES = 3*81
+
+PROGRESS_REWARD = 1 # The agent fills an empty location with a valid number
 NO_PROGRESS_REWARD = -1 # The agent removes a number from a location that was previously filled but with a valid number
-VIOLATION_REWARD = -1000 # The agent fills an empty location with an invalid number
-LOSS_REWARD = -2000 # After a certain number of moves, the agent has not solved the puzzle
-WIN_REWARD = 1000 # The agent has solved the puzzle
-DUMB_MOVE_REWARD = -10 # The agent makes a move that is stupid
+VIOLATION_REWARD = -10 # The agent fills an empty location with an invalid number
+LOSS_REWARD = -100 # After a certain number of moves, the agent has not solved the puzzle
+WIN_REWARD = 100 # The agent has solved the puzzle
+DUMB_MOVE_REWARD = -10 # The agent makes a move that is stupid = clear a cell already empty
+CHANGE_REWARD = -1 # The agent change the number in a cell
 
 TRAIN_DATA_PATH = "../data/train.txt"
 
