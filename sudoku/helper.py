@@ -15,6 +15,7 @@ import matplotlib.pyplot as plt
 from IPython import display
 import time
 import os
+from constants import SAVE_DIR
 
 plt.ion()
 plt.rcParams['figure.figsize'] = (6, 4)
