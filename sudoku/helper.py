@@ -16,8 +16,6 @@ from IPython import display
 import time
 import os
 
-SAVE_DIR = 'training' + os.sep + time.strftime('%Y-%m-%d-%H-%M')
-
 plt.ion()
 plt.rcParams['figure.figsize'] = (6, 4)
 

@@ -11,6 +11,9 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 
+import os
+import time
+
 MAX_MEMORY = 100_000
 BATCH_SIZE = 1000
 LR = 0.01
@@ -28,6 +31,8 @@ DUMB_MOVE_REWARD = -10 # The agent makes a move that is stupid = clear a cell al
 CHANGE_REWARD = -1 # The agent change the number in a cell
 
 TRAIN_DATA_PATH = "../data/train.txt"
+
+SAVE_DIR = 'training' + os.sep + time.strftime('%Y-%m-%d-%H-%M')
 
 # Set SIZE of game and other constants
 CELL_SIZE = 50

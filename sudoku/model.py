@@ -37,30 +37,30 @@ class Linear_QNet(nn.Module):
             x = layer(x)
         return x # x corresponds to Q values for each action
 
-    def save(self, file_name='model.pth'):
-        model_folder_path = './model'
-        if not os.path.exists(model_folder_path):
-            os.makedirs(model_folder_path)
+    def save(self, folder_path='.', file_name='model.pth'):
+        if not os.path.exists(folder_path):
+            os.makedirs(folder_path)
 
-        file_name = os.path.join(model_folder_path, file_name)
+        file_name = os.path.join(folder_path, file_name)
         torch.save(self.state_dict(), file_name)
 
 
 class QTrainer:
-    def __init__(self, model, lr, gamma):
+    def __init__(self, model, lr, gamma, device):
         self.lr = lr
         self.gamma = gamma
-        self.model = model
+        self.model = model.to(device)
         self.optimizer = optim.Adam(model.parameters(), lr=self.lr)
         self.criterion = nn.MSELoss()
         self.losses = []
         self.mean_losses = []
+        self.device = device
 
     def train_step(self, state, action, reward, next_state, done):
-        state = torch.tensor(state, dtype=torch.float)
-        next_state = torch.tensor(next_state, dtype=torch.float)
-        action = torch.tensor(action, dtype=torch.long)
-        reward = torch.tensor(reward, dtype=torch.float)
+        state = torch.tensor(state, dtype=torch.float).to(self.device)
+        next_state = torch.tensor(next_state, dtype=torch.float).to(self.device)
+        action = torch.tensor(action, dtype=torch.long).to(self.device)
+        reward = torch.tensor(reward, dtype=torch.float).to(self.device)
 
         if len(state.shape) == 2:
             state = torch.unsqueeze(state, 0)
@@ -93,7 +93,6 @@ class QTrainer:
         self.mean_losses.append(sum(self.losses) / len(self.losses))
 
         self.optimizer.step()
-
 
 
 if __name__ == '__main__':
