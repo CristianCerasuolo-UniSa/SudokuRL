@@ -9,7 +9,7 @@ The main objective is to be able to create an agent capable of solving at least 
 ## Actual State
 
 Currently the system works, the agent trains using Deep Q-Learning on a very diverse sudoku database. The agent is absolutely unable to solve any sudoku as he prefers to violate the rules rather than respect them. During the execution of the code, some graphs are saved that show the progress of the training.
-The amount of rewards he gets in each game is very low and struggles to increase.
+The amount of rewards he gets in each game is very low and struggles to increase, moreover the loss seems to stabilize and therefore does not lead to an update of the weights.
 
 ## Improvements
 
