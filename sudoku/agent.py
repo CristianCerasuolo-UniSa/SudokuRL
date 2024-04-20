@@ -29,7 +29,7 @@ class Agent:
         self.device = device
         self.gamma = DISCOUNT_RATE # discount rate
         self.memory = deque(maxlen=MAX_MEMORY) # popleft()
-        self.model = Linear_QNet(81 * 2, [4096, 8192, 4096], 810).to(torch.device(self.device))
+        self.model = Linear_QNet(18*9*10, [4096, 8192, 4096], 810).to(torch.device(self.device))
         self.trainer = QTrainer(self.model, lr=LR, gamma=self.gamma, device = torch.device(self.device)) 
 
     def remember(self, state, action, reward, next_state, done):
@@ -101,7 +101,7 @@ def train(device, save_period):
     game = Game()
     while True:
         # get old state
-        state_old = game.get_state()
+        state_old = game.get_1hot_state()
 
         # get move
         final_move = agent.get_action(state_old)
@@ -116,7 +116,7 @@ def train(device, save_period):
             change += 1
         total_reward += reward[0]
         
-        state_new = game.get_state()
+        state_new = game.get_1hot_state()
 
 
         # train short memory

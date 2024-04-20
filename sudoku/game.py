@@ -13,11 +13,11 @@
 
 import pygame
 from solver import Sudoku
-import time
-import math
 import pandas as pd
 from ast import literal_eval as listify
 import random
+from sklearn.preprocessing import OneHotEncoder
+import numpy as np
 
 from sudokuUI import *
 
@@ -131,6 +131,18 @@ class Game:
         board = self.game.get_board()
         board = [list(map(lambda x: 0 if x is None else x, col)) for col in board]
         return self.initial_board + board
+    
+    def get_1hot_state(self):
+        state = self.get_state()
+
+        encoder = OneHotEncoder(categories=[range(10)], sparse_output=False)
+        encoded_state = []
+
+        for row in state:
+            encoded_state.append(encoder.fit_transform(np.array(row).reshape(-1, 1)))
+
+
+        return np.stack(encoded_state, axis=0)
 
 
 # def visual_solve(game, cells):
@@ -343,6 +355,20 @@ class Game:
 if __name__ == '__main__':
     
     game = Game()
-    print(game.play_step((0, 3, 1)))
-    import time
-    time.sleep(1000)
+    from sklearn.preprocessing import OneHotEncoder
+    import numpy as np
+
+    state = game.get_state()
+
+    # Inizializzazione e applicazione del OneHotEncoder
+    encoder = OneHotEncoder(categories=[range(10)], sparse=False)
+    encoded_lists = []
+
+    for lista in state:
+        # Trasformare la lista in un array numpy 2D e applicare l'encoder
+        encoded_lists.append(encoder.fit_transform(np.array(lista).reshape(-1, 1)))
+        # Reshape del risultato in una lista di liste
+        # encoded_list = [elem.tolist() for elem in encoded_list]
+        # encoded_lists.append(encoded_list)
+
+    print(np.stack(encoded_lists, axis=0).shape)

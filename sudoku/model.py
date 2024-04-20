@@ -30,7 +30,7 @@ class Linear_QNet(nn.Module):
         self.layers = nn.Sequential(*self.layers)
 
     def forward(self, x):
-        if len(x.shape) != 3:
+        if len(x.shape) != 3:            
             x = x.view(-1, self.input_size)
 
         for layer in self.layers:
@@ -61,13 +61,13 @@ class QTrainer:
         action = torch.tensor(action, dtype=torch.long).to(self.device)
         reward = torch.tensor(reward, dtype=torch.float).to(self.device)
 
-        if len(state.shape) == 2:
+        if len(state.shape) == 3: # before 1hot it was 2
             state = torch.unsqueeze(state, 0)
             next_state = torch.unsqueeze(next_state, 0)
             action = torch.unsqueeze(action, 0)
             reward = torch.unsqueeze(reward, 0)
             done = (done, )
-
+        
         state = state.view(-1, self.model.input_size)
 
         # 1: predicted Q values with current state
